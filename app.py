@@ -17,8 +17,8 @@ st.set_page_config(
 # RUTAS
 # =========================================================
 
+# Las imágenes están en la misma carpeta que app.py
 BASE = Path(__file__).parent
-ASSETS = BASE / "assets"
 
 
 # =========================================================
@@ -30,20 +30,34 @@ def image_to_base64(path):
         return base64.b64encode(f.read()).decode()
 
 
-def audio_to_base64(path):
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
+# =========================================================
+# CARGAR IMÁGENES
+# =========================================================
+
+orquidea = image_to_base64(BASE / "orquidea.jpg")
+middlemist = image_to_base64(BASE / "middlemist.jpg")
+cerezo = image_to_base64(BASE / "cerezo.jpg")
+tulipan = image_to_base64(BASE / "tulipan.jpg")
+gatitos = image_to_base64(BASE / "gatitos.jpg")
 
 
 # =========================================================
-# CARGAR ARCHIVOS
+# YOUTUBE
 # =========================================================
 
-orquidea = image_to_base64("orquidea.jpg")
-middlemist = image_to_base64("middlemist.jpg")
-cerezo = image_to_base64("cerezo.jpg")
-tulipan = image_to_base64("tulipan.jpg")
-gatitos = image_to_base64("gatitos.jpg")
+# =========================================================
+# COLOCA AQUÍ EL ID DEL VIDEO DE YELLOW
+#
+# Ejemplo:
+#
+# https://www.youtube.com/watch?v=ABC12345678
+#
+# El ID sería:
+#
+# ABC12345678
+# =========================================================
+
+youtube_id = "yKNxeF4KMsY"
 
 
 # =========================================================
@@ -129,10 +143,85 @@ h1 {{
 
     padding: 18px;
 
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 
     box-shadow:
         0 5px 20px rgba(0,0,0,0.08);
+}}
+
+
+/* =====================================================
+   MÚSICA
+===================================================== */
+
+.music {{
+    margin: 20px auto 35px auto;
+
+    text-align: center;
+}}
+
+.music-button {{
+
+    background:
+        linear-gradient(
+            135deg,
+            #a13f65,
+            #c65a7d
+        );
+
+    color: white;
+
+    border: none;
+
+    padding: 13px 28px;
+
+    border-radius: 30px;
+
+    font-family: Georgia, serif;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,0.15);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}}
+
+.music-button:hover {{
+
+    transform: scale(1.05);
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,0.2);
+}}
+
+.music-button:active {{
+
+    transform: scale(0.97);
+}}
+
+
+/* =====================================================
+   YOUTUBE OCULTO
+===================================================== */
+
+.youtube-container {{
+
+    width: 1px;
+
+    height: 1px;
+
+    overflow: hidden;
+
+    position: absolute;
+
+    left: -9999px;
+
+    top: -9999px;
 }}
 
 
@@ -151,6 +240,10 @@ h1 {{
 }}
 
 
+/* =====================================================
+   TARJETAS
+===================================================== */
+
 .card {{
 
     position: relative;
@@ -165,8 +258,24 @@ h1 {{
 
     box-shadow:
         0 8px 25px rgba(0,0,0,0.12);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }}
 
+.card:hover {{
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.16);
+}}
+
+
+/* =====================================================
+   IMAGEN
+===================================================== */
 
 .flower-image {{
 
@@ -267,7 +376,6 @@ h1 {{
 
     transition:
         opacity 0.4s ease;
-
 }}
 
 
@@ -288,6 +396,8 @@ h1 {{
 
     box-shadow:
         0 10px 30px rgba(0,0,0,0.1);
+
+    text-align: center;
 }}
 
 
@@ -298,6 +408,9 @@ h1 {{
     max-width: 500px;
 
     border-radius: 25px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.12);
 }}
 
 
@@ -306,30 +419,8 @@ h1 {{
     font-size: 40px;
 
     color: #a13f65;
-}}
 
-
-.final p {{
-
-    font-size: 22px;
-}}
-
-
-/* =====================================================
-   MÚSICA
-===================================================== */
-
-.music {{
-
-    margin: 25px auto;
-
-    max-width: 500px;
-}}
-
-
-.music audio {{
-
-    width: 100%;
+    margin-bottom: 25px;
 }}
 
 
@@ -352,6 +443,11 @@ h1 {{
     .card {{
 
         height: 360px;
+    }}
+
+    .final h2 {{
+
+        font-size: 32px;
     }}
 
 }}
@@ -392,6 +488,37 @@ Una pequeña sorpresa para ti
 <br><br>
 
 Raspa cada tarjeta (tu confia ñejejeje) ❤️
+
+</div>
+
+
+<!-- ===================================================
+     MÚSICA
+=================================================== -->
+
+<div class="music">
+
+<button
+    class="music-button"
+    onclick="playMusic()"
+>
+🎵 Reproducir Yellow
+</button>
+
+
+<div class="youtube-container">
+
+<iframe
+    id="youtube-player"
+    width="1"
+    height="1"
+    src="https://www.youtube.com/embed/{youtube_id}?enablejsapi=1&playsinline=1&controls=0&rel=0"
+    frameborder="0"
+    allow="autoplay"
+>
+</iframe>
+
+</div>
 
 </div>
 
@@ -560,6 +687,73 @@ Te amo 🐱❤️
 
 
 /* =====================================================
+   YOUTUBE
+===================================================== */
+
+let youtubePlayer = null;
+
+
+/* =====================================================
+   API DE YOUTUBE
+===================================================== */
+
+function onYouTubeIframeAPIReady() {{
+
+    youtubePlayer =
+        new YT.Player(
+            "youtube-player",
+            {{
+
+                events: {{
+
+                    onReady:
+                        function(event) {{
+
+                            console.log(
+                                "YouTube listo"
+                            );
+
+                        }}
+
+                }}
+
+            }}
+        );
+
+}}
+
+
+/* =====================================================
+   CARGAR API DE YOUTUBE
+===================================================== */
+
+const youtubeScript =
+    document.createElement("script");
+
+youtubeScript.src =
+    "https://www.youtube.com/iframe_api";
+
+document.head.appendChild(
+    youtubeScript
+);
+
+
+/* =====================================================
+   REPRODUCIR YELLOW
+===================================================== */
+
+function playMusic() {{
+
+    if (youtubePlayer) {{
+
+        youtubePlayer.playVideo();
+
+    }}
+
+}}
+
+
+/* =====================================================
    RASPADAS
 ===================================================== */
 
@@ -696,7 +890,8 @@ canvases.forEach(canvas => {{
 
             started = true;
 
-            coverText.style.opacity = "0";
+            coverText.style.opacity =
+                "0";
 
         }}
 
@@ -704,7 +899,7 @@ canvases.forEach(canvas => {{
 
 
     /* =================================================
-       POSICIÓN DEL MOUSE / DEDO
+       POSICIÓN
     ================================================= */
 
     function getPosition(e) {{
@@ -839,7 +1034,7 @@ canvases.forEach(canvas => {{
         "touchmove",
         function(e) {{
 
-            e.preventDefault();                
+            e.preventDefault();
 
 
             if (!drawing)
@@ -870,72 +1065,6 @@ canvases.forEach(canvas => {{
     );
 
 }});
-
-
-/* =====================================================
-   MÚSICA
-===================================================== */
-
-const music =
-    document.getElementById("yellow");
-
-
-/*
-   Intentamos reproducir automáticamente.
-*/
-
-function startMusic() {{
-
-    music.play().catch(() => {{
-
-        /*
-           El navegador puede bloquear el autoplay.
-           En ese caso esperamos la primera interacción.
-        */
-
-    }});
-
-}}
-
-
-/* =====================================================
-   INTENTO DE AUTOPLAY
-===================================================== */
-
-window.addEventListener(
-    "load",
-    function() {{
-
-        startMusic();
-
-    }}
-);
-
-
-/* =====================================================
-   ACTIVAR MÚSICA EN EL PRIMER TOQUE / CLIC
-===================================================== */
-
-document.addEventListener(
-    "click",
-    function() {{
-
-        startMusic();
-
-    }},
-    {{ once: true }}
-);
-
-
-document.addEventListener(
-    "touchstart",
-    function() {{
-
-        startMusic();
-
-    }},
-    {{ once: true }}
-);
 
 
 </script>
