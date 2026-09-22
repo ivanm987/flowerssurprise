@@ -17,7 +17,20 @@ st.set_page_config(
 # RUTAS
 # =========================================================
 
+<div class="music">
 
+    <iframe
+        id="youtubePlayer"
+        width="100%"
+        height="80"
+        src="https://www.youtube.com/watch?v=yKNxeF4KMsY&list=RDyKNxeF4KMsY&start_radio=1"
+        title="Yellow"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+    </iframe>
+
+</div>
 
 # =========================================================
 # FUNCIONES
