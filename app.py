@@ -391,8 +391,7 @@ Una pequeña sorpresa para ti
 
 <br><br>
 
-Raspa cada tarjeta con tu dedo o con el mouse
-para descubrir lo que hay debajo. ❤️
+Raspa cada tarjeta (tu confia ñejejeje) ❤️
 
 </div>
 
