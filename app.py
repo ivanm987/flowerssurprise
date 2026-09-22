@@ -1,32 +1,43 @@
 import streamlit as st
 import streamlit.components.v1 as components
-from pathlib import Path
 import base64
+from pathlib import Path
 
-
-# =========================
+# =========================================================
 # CONFIGURACIÓN
-# =========================
+# =========================================================
 
 st.set_page_config(
-    page_title="For you ❤️",
-    page_icon="🌷",
+    page_title="Para ti ❤️",
+    page_icon="🌸",
     layout="centered"
 )
 
-
-# =========================
-# CARGAR IMÁGENES
-# =========================
+# =========================================================
+# RUTAS
+# =========================================================
 
 BASE = Path(__file__).parent
 ASSETS = BASE / "assets"
 
 
+# =========================================================
+# FUNCIONES
+# =========================================================
+
 def image_to_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
+
+def audio_to_base64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+
+# =========================================================
+# CARGAR ARCHIVOS
+# =========================================================
 
 orquidea = image_to_base64("orquidea.jpg")
 middlemist = image_to_base64("middlemist.jpg")
@@ -35,17 +46,9 @@ tulipan = image_to_base64("tulipan.jpg")
 gatitos = image_to_base64("gatitos.jpg")
 
 
-# =========================
-# YOUTUBE
-# =========================
-
-# CAMBIA ESTO por el ID de tu video de YouTube
-youtube_id = "https://www.youtube.com/watch?v=yKNxeF4KMsY&list=RDyKNxeF4KMsY&start_radio=1"
-
-
-# =========================
+# =========================================================
 # HTML
-# =========================
+# =========================================================
 
 html = f"""
 <!DOCTYPE html>
@@ -54,128 +57,303 @@ html = f"""
 
 <head>
 
-<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
+* {{
+    box-sizing: border-box;
+}}
 
 body {{
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #fff0f5, #ffe4ec);
+
     font-family: Georgia, serif;
-    text-align: center;
-    color: #5a3040;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff7fb,
+            #fffaf0,
+            #f9f4ff
+        );
+
+    color: #4b3540;
 }}
 
 .container {{
-    max-width: 600px;
+    max-width: 950px;
+
     margin: auto;
+
     padding: 25px;
+
+    text-align: center;
 }}
+
+
+/* =====================================================
+   TÍTULO
+===================================================== */
 
 h1 {{
     font-size: 42px;
-    margin-bottom: 10px;
+
+    margin-bottom: 5px;
+
+    color: #8b4567;
 }}
 
 .subtitle {{
-    font-size: 20px;
-    margin-bottom: 30px;
-}}
-
-.start-btn {{
-    background: #d94f70;
-    color: white;
-    border: none;
-    padding: 15px 35px;
-    border-radius: 30px;
     font-size: 18px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+
+    margin-bottom: 30px;
+
+    color: #765b68;
 }}
 
-.start-btn:hover {{
-    transform: scale(1.05);
-}}
 
-#flowers {{
-    display: none;
-}}
+/* =====================================================
+   INSTRUCCIONES
+===================================================== */
 
-.flower {{
-    margin-top: 40px;
-    margin-bottom: 50px;
-}}
+.instructions {{
+    background: rgba(255,255,255,0.78);
 
-.flower-title {{
-    font-size: 26px;
-    margin-bottom: 15px;
-}}
-
-.scratch-container {{
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin: auto;
     border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+
+    padding: 18px;
+
+    margin-bottom: 30px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.08);
 }}
+
+
+/* =====================================================
+   FLORES
+===================================================== */
+
+.flowers {{
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 25px;
+}}
+
+
+.card {{
+
+    position: relative;
+
+    height: 390px;
+
+    border-radius: 25px;
+
+    overflow: hidden;
+
+    background: white;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.12);
+}}
+
 
 .flower-image {{
+
     width: 100%;
+
     height: 100%;
+
     object-fit: cover;
 }}
 
-canvas {{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}}
 
-.cover-text {{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    pointer-events: none;
-    text-shadow: 0 2px 5px black;
-    transition: opacity 0.4s ease;
-}}
+/* =====================================================
+   MENSAJE
+===================================================== */
 
 .message {{
-    margin-top: 18px;
-    font-size: 21px;
-    font-style: italic;
-    padding: 0 20px;
+
+    position: absolute;
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+    background:
+        rgba(255,255,255,0.92);
+
+    padding: 20px;
+
+    font-size: 20px;
+
+    line-height: 1.5;
+
+    color: #633f50;
 }}
+
+
+.flower-name {{
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}}
+
+
+/* =====================================================
+   CAPA PARA RASPAR
+===================================================== */
+
+.scratch {{
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    cursor: crosshair;
+
+    z-index: 5;
+
+    touch-action: none;
+}}
+
+
+/* =====================================================
+   TEXTO "RASPA AQUÍ"
+===================================================== */
+
+.cover-text {{
+
+    position: absolute;
+
+    z-index: 6;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    color: white;
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,0.6);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.4s ease;
+
+}}
+
+
+/* =====================================================
+   FINAL
+===================================================== */
 
 .final {{
-    margin-top: 60px;
-    padding-bottom: 50px;
+
+    margin-top: 50px;
+
+    padding: 35px;
+
+    background:
+        rgba(255,255,255,0.82);
+
+    border-radius: 30px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.1);
 }}
+
 
 .final img {{
-    width: 300px;
-    max-width: 90%;
+
+    width: 100%;
+
+    max-width: 500px;
+
     border-radius: 25px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }}
 
-.love {{
-    font-size: 45px;
-    color: #d94f70;
-    margin-top: 20px;
+
+.final h2 {{
+
+    font-size: 40px;
+
+    color: #a13f65;
 }}
+
+
+.final p {{
+
+    font-size: 22px;
+}}
+
+
+/* =====================================================
+   MÚSICA
+===================================================== */
 
 .music {{
-    display: none;
+
+    margin: 25px auto;
+
+    max-width: 500px;
+}}
+
+
+.music audio {{
+
+    width: 100%;
+}}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 700px) {{
+
+    .flowers {{
+
+        grid-template-columns: 1fr;
+    }}
+
+    h1 {{
+
+        font-size: 32px;
+    }}
+
+    .card {{
+
+        height: 360px;
+    }}
+
 }}
 
 </style>
@@ -185,271 +363,292 @@ canvas {{
 
 <body>
 
+
 <div class="container">
 
-    <h1>🌸 Para ti ❤️</h1>
 
-    <div class="subtitle">
-        Hice algo pequeñito para ti...
-    </div>
+<!-- ===================================================
+     TÍTULO
+=================================================== -->
 
-
-    <button class="start-btn" onclick="startSurprise()">
-        COMENZAR ❤️
-    </button>
+<h1>
+🌸 Para ti 🌸
+</h1>
 
 
-    <div id="flowers">
+<div class="subtitle">
 
-
-        <!-- ========================= -->
-        <!-- ORQUÍDEA -->
-        <!-- ========================= -->
-
-        <div class="flower">
-
-            <div class="flower-title">
-                🌺
-            </div>
-
-            <div class="scratch-container">
-
-                <img
-                    class="flower-image"
-                    src="data:image/jpeg;base64,{orquidea}"
-                >
-
-                <canvas></canvas>
-
-                <div class="cover-text">
-                    Raspa aquí
-                </div>
-
-            </div>
-
-            <div class="message">
-                por cada vez que me haces sonreír
-            </div>
-
-        </div>
-
-
-
-        <!-- ========================= -->
-        <!-- MIDDLEMIST'S RED -->
-        <!-- ========================= -->
-
-        <div class="flower">
-
-            <div class="flower-title">
-                🌹
-            </div>
-
-            <div class="scratch-container">
-
-                <img
-                    class="flower-image"
-                    src="data:image/jpeg;base64,{middlemist}"
-                >
-
-                <canvas></canvas>
-
-                <div class="cover-text">
-                    Raspa aquí
-                </div>
-
-            </div>
-
-            <div class="message">
-                porque eres difícil de encontrar
-            </div>
-
-        </div>
-
-
-
-        <!-- ========================= -->
-        <!-- CEREZO -->
-        <!-- ========================= -->
-
-        <div class="flower">
-
-            <div class="flower-title">
-                🌸
-            </div>
-
-            <div class="scratch-container">
-
-                <img
-                    class="flower-image"
-                    src="data:image/jpeg;base64,{cerezo}"
-                >
-
-                <canvas></canvas>
-
-                <div class="cover-text">
-                    Raspa aquí
-                </div>
-
-            </div>
-
-            <div class="message">
-                por todo lo bonito que todavía nos falta vivir
-            </div>
-
-        </div>
-
-
-
-        <!-- ========================= -->
-        <!-- TULIPÁN -->
-        <!-- ========================= -->
-
-        <div class="flower">
-
-            <div class="flower-title">
-                🌷
-            </div>
-
-            <div class="scratch-container">
-
-                <img
-                    class="flower-image"
-                    src="data:image/jpeg;base64,{tulipan}"
-                >
-
-                <canvas></canvas>
-
-                <div class="cover-text">
-                    Raspa aquí
-                </div>
-
-            </div>
-
-            <div class="message">
-                por los momentos que pasamos juntos
-            </div>
-
-        </div>
-
-
-
-        <!-- ========================= -->
-        <!-- FINAL -->
-        <!-- ========================= -->
-
-        <div class="final">
-
-            <img
-                src="data:image/jpeg;base64,{gatitos}"
-            >
-
-            <div class="love">
-                Te amo ❤️
-            </div>
-
-        </div>
-
-    </div>
+Hay algunas cosas que quería decirte...
 
 </div>
 
 
+<div class="instructions">
 
-<!-- ========================= -->
-<!-- YOUTUBE -->
-<!-- ========================= -->
+<strong>
+Una pequeña sorpresa para ti
+</strong>
+
+<br><br>
+
+Raspa cada tarjeta con tu dedo o con el mouse
+para descubrir lo que hay debajo. ❤️
+
+</div>
+
+
+<!-- ===================================================
+     FLORES
+=================================================== -->
+
+<div class="flowers">
+
+
+<!-- ===================================================
+     ORQUÍDEA
+=================================================== -->
+
+<div class="card">
+
+<img
+class="flower-image"
+src="data:image/jpeg;base64,{orquidea}"
+>
+
+<div class="message">
+
+<div class="flower-name">
+🌺 Orquídea
+</div>
+
+Por cada vez que me haces sonreír.
+
+</div>
+
+<canvas class="scratch"></canvas>
+
+<div class="cover-text">
+✨ Raspa aquí ✨
+</div>
+
+</div>
+
+
+<!-- ===================================================
+     MIDDLEMIST
+=================================================== -->
+
+<div class="card">
+
+<img
+class="flower-image"
+src="data:image/jpeg;base64,{middlemist}"
+>
+
+<div class="message">
+
+<div class="flower-name">
+🌹 Middlemist's Red
+</div>
+
+Porque eres difícil de encontrar.
+
+</div>
+
+<canvas class="scratch"></canvas>
+
+<div class="cover-text">
+✨ Raspa aquí ✨
+</div>
+
+</div>
+
+
+<!-- ===================================================
+     CEREZO
+=================================================== -->
+
+<div class="card">
+
+<img
+class="flower-image"
+src="data:image/jpeg;base64,{cerezo}"
+>
+
+<div class="message">
+
+<div class="flower-name">
+🌸 Flor de cerezo
+</div>
+
+Por todo lo bonito que todavía
+nos falta vivir.
+
+</div>
+
+<canvas class="scratch"></canvas>
+
+<div class="cover-text">
+✨ Raspa aquí ✨
+</div>
+
+</div>
+
+
+<!-- ===================================================
+     TULIPÁN
+=================================================== -->
+
+<div class="card">
+
+<img
+class="flower-image"
+src="data:image/jpeg;base64,{tulipan}"
+>
+
+<div class="message">
+
+<div class="flower-name">
+🌷 Tulipán
+</div>
+
+Por todos los momentos
+que pasamos juntos.
+
+</div>
+
+<canvas class="scratch"></canvas>
+
+<div class="cover-text">
+✨ Raspa aquí ✨
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- ===================================================
+     FINAL
+=================================================== -->
+
+<div class="final">
+
+<h2>
+❤️ Y todavía falta una cosa... ❤️
+</h2>
+
+
+<img
+src="data:image/jpeg;base64,{gatitos}"
+>
+
+
+<h2>
+Te amo
+</h2>
+
+
+<p>
+
+Más de lo que estas cuatro flores
+pueden explicar. 🐱❤️
+
+</p>
+
+</div>
+
+
+<!-- ===================================================
+     MÚSICA
+=================================================== -->
 
 <div class="music">
 
-    <iframe
-        id="youtube"
-        width="1"
-        height="1"
-        src="https://www.youtube.com/embed/{youtube_id}?enablejsapi=1&playsinline=1"
-        frameborder="0"
-        allow="autoplay"
-    >
-    </iframe>
+<audio
+id="yellow"
+loop
+preload="auto"
+>
+
+<source
+src="data:audio/mpeg;base64,{yellow}"
+type="audio/mpeg"
+>
+
+</audio>
+
+<p>
+🎵 Nuestra canción
+</p>
 
 </div>
 
 
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script>
 
-let player;
+
+/* =====================================================
+   RASPADAS
+===================================================== */
+
+const canvases =
+    document.querySelectorAll(".scratch");
 
 
-function startSurprise() {{
+canvases.forEach(canvas => {{
 
-    document.getElementById("flowers").style.display = "block";
-
-    document.querySelector(".start-btn").style.display = "none";
-
-    // Intentar reproducir YouTube
-    if (player) {{
-        player.playVideo();
-    }}
-
-}}
+    const ctx =
+        canvas.getContext("2d");
 
 
+    const coverText =
+        canvas.parentElement
+             .querySelector(".cover-text");
 
-// =========================
-// YOUTUBE API
-// =========================
-
-function onYouTubeIframeAPIReady() {{
-
-    player = new YT.Player("youtube", {{
-
-        events: {{
-
-            "onReady": function(event) {{
-
-                // No reproducimos automáticamente aquí.
-                // El botón COMENZAR dará la interacción necesaria.
-            }}
-
-        }}
-
-    }});
-
-}}
-
-
-</script>
-
-
-<script src="https://www.youtube.com/iframe_api"></script>
-
-
-
-<script>
-
-// =========================
-// SCRATCH CARDS
-// =========================
-
-document.querySelectorAll(".scratch-container").forEach(container => {{
-
-    const canvas = container.querySelector("canvas");
-
-    const ctx = canvas.getContext("2d");
-
-    const coverText = container.querySelector(".cover-text");
 
     let drawing = false;
+
     let started = false;
 
 
+    /* =================================================
+       CONFIGURAR CANVAS
+    ================================================= */
+
     function resizeCanvas() {{
 
-        canvas.width = container.offsetWidth;
-        canvas.height = container.offsetHeight;
+        const rect =
+            canvas.getBoundingClientRect();
 
-        ctx.fillStyle = "#c9c9c9";
+
+        canvas.width =
+            rect.width;
+
+
+        canvas.height =
+            rect.height;
+
+
+        /* ---------------------------------------------
+           CAPA ROSADA
+        --------------------------------------------- */
+
+        ctx.globalCompositeOperation =
+            "source-over";
+
+
+        ctx.fillStyle =
+            "#d9b6c5";
+
 
         ctx.fillRect(
             0,
@@ -458,28 +657,77 @@ document.querySelectorAll(".scratch-container").forEach(container => {{
             canvas.height
         );
 
+
+        /* ---------------------------------------------
+           TEXTURA
+        --------------------------------------------- */
+
+        ctx.fillStyle =
+            "rgba(255,255,255,0.25)";
+
+
+        for (
+            let x = 0;
+            x < canvas.width;
+            x += 30
+        ) {{
+
+            for (
+                let y = 0;
+                y < canvas.height;
+                y += 30
+            ) {{
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    x,
+                    y,
+                    2,
+                    0,
+                    Math.PI * 2
+                );
+
+                ctx.fill();
+
+            }}
+
+        }}
+
     }}
 
 
     resizeCanvas();
 
 
+    /* =================================================
+       FUNCIÓN DE RASPADO
+    ================================================= */
+
     function scratch(x, y) {{
 
-        ctx.globalCompositeOperation = "destination-out";
+        ctx.globalCompositeOperation =
+            "destination-out";
+
 
         ctx.beginPath();
+
 
         ctx.arc(
             x,
             y,
-            25,
+            28,
             0,
             Math.PI * 2
         );
 
+
         ctx.fill();
 
+
+        /* ---------------------------------------------
+           DESAPARECER "RASPA AQUÍ"
+        --------------------------------------------- */
 
         if (!started) {{
 
@@ -492,48 +740,240 @@ document.querySelectorAll(".scratch-container").forEach(container => {{
     }}
 
 
-    canvas.addEventListener("pointerdown", function(e) {{
+    /* =================================================
+       POSICIÓN DEL MOUSE / DEDO
+    ================================================= */
 
-        drawing = true;
+    function getPosition(e) {{
 
-        const rect = canvas.getBoundingClientRect();
-
-        scratch(
-            e.clientX - rect.left,
-            e.clientY - rect.top
-        );
-
-    }});
+        const rect =
+            canvas.getBoundingClientRect();
 
 
-    canvas.addEventListener("pointermove", function(e) {{
+        if (e.touches) {{
 
-        if (!drawing) return;
+            return {{
 
-        const rect = canvas.getBoundingClientRect();
+                x:
+                    e.touches[0].clientX
+                    - rect.left,
 
-        scratch(
-            e.clientX - rect.left,
-            e.clientY - rect.top
-        );
+                y:
+                    e.touches[0].clientY
+                    - rect.top
 
-    }});
+            }};
 
-
-    canvas.addEventListener("pointerup", function() {{
-
-        drawing = false;
-
-    }});
+        }}
 
 
-    canvas.addEventListener("pointerleave", function() {{
+        return {{
 
-        drawing = false;
+            x:
+                e.clientX
+                - rect.left,
 
-    }});
+            y:
+                e.clientY
+                - rect.top
+
+        }};
+
+    }}
+
+
+    /* =================================================
+       MOUSE
+    ================================================= */
+
+    canvas.addEventListener(
+        "mousedown",
+        function(e) {{
+
+            drawing = true;
+
+            const p =
+                getPosition(e);
+
+            scratch(
+                p.x,
+                p.y
+            );
+
+        }}
+    );
+
+
+    canvas.addEventListener(
+        "mousemove",
+        function(e) {{
+
+            if (!drawing)
+                return;
+
+
+            const p =
+                getPosition(e);
+
+
+            scratch(
+                p.x,
+                p.y
+            );
+
+        }}
+    );
+
+
+    canvas.addEventListener(
+        "mouseup",
+        function() {{
+
+            drawing = false;
+
+        }}
+    );
+
+
+    canvas.addEventListener(
+        "mouseleave",
+        function() {{
+
+            drawing = false;
+
+        }}
+    );
+
+
+    /* =================================================
+       TOUCH / CELULAR
+    ================================================= */
+
+    canvas.addEventListener(
+        "touchstart",
+        function(e) {{
+
+            e.preventDefault();
+
+            drawing = true;
+
+
+            const p =
+                getPosition(e);
+
+
+            scratch(
+                p.x,
+                p.y
+            );
+
+        }},
+        {{ passive: false }}
+    );
+
+
+    canvas.addEventListener(
+        "touchmove",
+        function(e) {{
+
+            e.preventDefault();
+
+
+            if (!drawing)
+                return;
+
+
+            const p =
+                getPosition(e);
+
+
+            scratch(
+                p.x,
+                p.y
+            );
+
+        }},
+        {{ passive: false }}
+    );
+
+
+    canvas.addEventListener(
+        "touchend",
+        function() {{
+
+            drawing = false;
+
+        }}
+    );
 
 }});
+
+
+/* =====================================================
+   MÚSICA
+===================================================== */
+
+const music =
+    document.getElementById("yellow");
+
+
+/*
+   Intentamos reproducir automáticamente.
+*/
+
+function startMusic() {{
+
+    music.play().catch(() => {{
+
+        /*
+           El navegador puede bloquear el autoplay.
+           En ese caso esperamos la primera interacción.
+        */
+
+    }});
+
+}}
+
+
+/* =====================================================
+   INTENTO DE AUTOPLAY
+===================================================== */
+
+window.addEventListener(
+    "load",
+    function() {{
+
+        startMusic();
+
+    }}
+);
+
+
+/* =====================================================
+   ACTIVAR MÚSICA EN EL PRIMER TOQUE / CLIC
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function() {{
+
+        startMusic();
+
+    }},
+    {{ once: true }}
+);
+
+
+document.addEventListener(
+    "touchstart",
+    function() {{
+
+        startMusic();
+
+    }},
+    {{ once: true }}
+);
+
 
 </script>
 
@@ -544,12 +984,12 @@ document.querySelectorAll(".scratch-container").forEach(container => {{
 """
 
 
-# =========================
-# MOSTRAR
-# =========================
+# =========================================================
+# MOSTRAR APLICACIÓN
+# =========================================================
 
 components.html(
     html,
-    height=1800,
+    height=1500,
     scrolling=True
 )
