@@ -560,35 +560,6 @@ pueden explicar. 🐱❤️
 </div>
 
 
-<!-- ===================================================
-     MÚSICA
-=================================================== -->
-
-<div class="music">
-
-<audio
-id="yellow"
-loop
-preload="auto"
->
-
-<source
-src="data:audio/mpeg;base64,{yellow}"
-type="audio/mpeg"
->
-
-</audio>
-
-<p>
-🎵 Nuestra canción
-</p>
-
-</div>
-
-
-</div>
-
-
 <!-- =====================================================
      JAVASCRIPT
 ===================================================== -->
