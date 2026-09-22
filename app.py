@@ -546,16 +546,9 @@ src="data:image/jpeg;base64,{gatitos}"
 
 
 <h2>
-Te amo
+Te amo 🐱❤️
 </h2>
 
-
-<p>
-
-Más de lo que estas cuatro flores
-pueden explicar. 🐱❤️
-
-</p>
 
 </div>
 
@@ -847,7 +840,7 @@ canvases.forEach(canvas => {{
         "touchmove",
         function(e) {{
 
-            e.preventDefault();
+            e.preventDefault();                
 
 
             if (!drawing)
