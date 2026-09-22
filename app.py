@@ -17,8 +17,6 @@ st.set_page_config(
 # RUTAS
 # =========================================================
 
-BASE = Path(__file__).parent
-ASSETS = BASE / "assets"
 
 
 # =========================================================
@@ -39,13 +37,13 @@ def audio_to_base64(path):
 # CARGAR ARCHIVOS
 # =========================================================
 
-orquidea = image_to_base64(ASSETS / "orquidea.jpg")
-middlemist = image_to_base64(ASSETS / "middlemist.jpg")
-cerezo = image_to_base64(ASSETS / "cerezo.jpg")
-tulipan = image_to_base64(ASSETS / "tulipan.jpg")
-gatitos = image_to_base64(ASSETS / "gatitos.jpg")
+orquidea = image_to_base64("orquidea.jpg")
+middlemist = image_to_base64("middlemist.jpg")
+cerezo = image_to_base64("cerezo.jpg")
+tulipan = image_to_base64("tulipan.jpg")
+gatitos = image_to_base64("gatitos.jpg")
 
-yellow = audio_to_base64(ASSETS / "yellow.mp3")
+yellow = audio_to_base64("yellow.mp3")
 
 
 # =========================================================
