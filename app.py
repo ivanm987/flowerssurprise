@@ -502,7 +502,7 @@ Raspa cada tarjeta (tu confia ñejejeje) ❤️
     class="music-button"
     onclick="playMusic()"
 >
-🎵 Reproducir Yellow
+🎵 Click aqui (no es virus, ni chicas hot a 20 km de ti)
 </button>
 
 
