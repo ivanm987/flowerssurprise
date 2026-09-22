@@ -33,15 +33,13 @@ def audio_to_base64(path):
 # ARCHIVOS
 # ---------------------------------------------------------
 
-BASE = Path("assets")
+orquidea = image_to_base64("orquidea.jpg")
+middlemist = image_to_base64("middlemist.jpg")
+cerezo = image_to_base64("cerezo.jpg")
+tulipan = image_to_base64("tulipan.jpg")
+gatitos = image_to_base64("gatitos.jpg")
 
-orquidea = image_to_base64(BASE / "orquidea.jpg")
-middlemist = image_to_base64(BASE / "middlemist.jpg")
-cerezo = image_to_base64(BASE / "cerezo.jpg")
-tulipan = image_to_base64(BASE / "tulipan.jpg")
-gatitos = image_to_base64(BASE / "gatitos.jpg")
-
-yellow = audio_to_base64(BASE / "yellow.mp3")
+yellow = audio_to_base64("yellow.mp3")
 
 
 # ---------------------------------------------------------
